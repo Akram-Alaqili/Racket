@@ -119,3 +119,43 @@ ___
 (overlay/offset medium-red -3 -3 medium-black)
 ```
 [Making Simple Images in Racket.pdf](https://github.com/Akram-Alaqili/Racket/files/12612711/Making.Simple.Images.in.Racket.pdf)
+
+**Practice:** Create Three Unique design:
+
+```
+#lang racket
+(require 2htdp/image)
+
+
+; nested stars
+(define xxsmall-yellow (star 45 'solid "yellow"))
+(define xsmall-yellow (star 45 'solid "yellow"))
+(define small-white (star 55 'solid "white"))
+(define medium-black (star 65 'solid "black"))
+(define large-red (star 75 'solid "red"))
+(define xlarge-gray (star 85 'solid "gray"))
+(define xxlarge-pink (star 95 'solid "pink"))
+
+(beside
+(overlay xsmall-yellow small-white medium-black large-red xlarge-gray xxlarge-pink)
+
+(rectangle 70 75 255 "white")
+
+;Ukraine Flag <3
+(above
+(rectangle 300 75 255(make-color 0 87 183))
+(rectangle 300 75 255(make-color 255 215 0)))
+
+(rectangle 70 75 255 "white")
+
+;PAC-MAN
+(beside
+(rotate 30 (wedge 70 300 "solid" "gold"))
+(circle 10 'solid "black")
+(circle 3 'solid "white")
+(circle 10 'solid "black")
+(circle 3 'solid "white")
+(circle 10 'solid "black")))
+```
+[Output.pdf](https://github.com/Akram-Alaqili/Racket/files/12614502/Output.pdf)
+

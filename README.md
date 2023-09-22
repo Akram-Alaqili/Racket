@@ -159,3 +159,64 @@ ___
 ```
 [Output.pdf](https://github.com/Akram-Alaqili/Racket/files/12614502/Output.pdf)
 
+____
+**Making a New Language**
+Reference
+
+https://beautifulracket.com/stacker/intro.html
+
+stacker.rkt
+
+```
+#lang br/quicklang
+
+(define (read-syntax path port)
+  (define src-lines (port->lines port))
+  (define src-datums (format-datums '(handle ~a) src-lines))
+  (define module-datum `(module stacker-mod "stacker.rkt"
+                          ,@src-datums))
+  (datum->syntax #f module-datum))
+(provide read-syntax)
+
+(define-macro (stacker-module-begin HANDLE-EXPR ...)
+  #'(#%module-begin
+     HANDLE-EXPR ...
+     (display (first stack))))
+(provide (rename-out [stacker-module-begin #%module-begin]))
+
+(define stack empty)
+
+(define (pop-stack!)
+  (define arg (first stack))
+  (set! stack (rest stack))
+  arg)
+
+(define (push-stack! arg)
+  (set! stack (cons arg stack)))
+
+(define (handle [arg #f])
+  (cond
+    [(number? arg) (push-stack! arg)]
+    [(or (equal? * arg) (equal? + arg))
+     (define op-result (arg (pop-stack!) (pop-stack!))) 
+     (push-stack! op-result)]))
+(provide handle)
+
+(provide + *)
+```
+
+stacker-test.rkt
+
+```
+#lang reader "stacker.rkt"
+4
+8
++
+3
+*
+```
+![Testing Our Expander With Bindings 1](https://github.com/Akram-Alaqili/Racket/assets/21014412/64e6df80-56b4-49a2-900c-b19dc4341b48)
+
+![Testing Our Expander With Bindings 2](https://github.com/Akram-Alaqili/Racket/assets/21014412/7f76b63d-ebbe-4737-a9ff-f09fc55ce1fa)
+
+___
